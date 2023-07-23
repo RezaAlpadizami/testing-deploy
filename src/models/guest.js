@@ -7,14 +7,23 @@ const getAllMessages = () => {
 };
 
 const createPostMessages = async (body) => {
-  const SQLQuery = `INSERT INTO guest (name, message, selected_option) VALUES ("${body.name}", "${body.message}", "${body.selected_option}")`;
+  try {
+    if (!body.selected_option) {
+      throw new Error("Datang ga nih ? kasih tau kita dung");
+    }
 
-  await db.execute(SQLQuery);
+    const SQLQuery = `INSERT INTO guest (name, message, selected_option) VALUES ("${body.name}", "${body.message}", "${body.selected_option}")`;
 
-  const fetchQuery = "SELECT * FROM guest ORDER BY createdAt DESC";
-  const [rows] = await db.execute(fetchQuery);
+    await db.execute(SQLQuery);
 
-  return rows;
+    const fetchQuery = "SELECT * FROM guest ORDER BY createdAt DESC";
+    const [rows] = await db.execute(fetchQuery);
+
+    return rows;
+  } catch (error) {
+    console.error("Error:", error);
+    return null;
+  }
 };
 
 module.exports = {
