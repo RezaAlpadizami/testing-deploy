@@ -28,7 +28,7 @@ app.use("/guestname", guestNameRoutes);
 app.get("/", (req, res) => {
   // Set a cookie with SameSite=None and Secure attributes
   res.cookie({
-    sameSite: "none",
+    sameSite: "Lax",
     secure: true,
 });
   res.send("Cookie set successfully!");
