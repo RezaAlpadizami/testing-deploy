@@ -8,13 +8,14 @@ const getAllMessages = () => {
 
 const createPostMessages = async (body) => {
   try {
-    if (!body.selected_option) {
-      throw new Error("Datang ga nih ? kasih tau kita dung");
+    if (!body.selected_option || body.name.trim() === "") {
+      throw new Error("Maaf boleh diisi nama dan kehadirannya :D.");
     }
 
-    const SQLQuery = `INSERT INTO guest (name, message, selected_option) VALUES ("${body.name}", "${body.message}", "${body.selected_option}")`;
+    const SQLQuery = "INSERT INTO guest (name, message, selected_option) VALUES (?, ?, ?)";
+    const values = [body.name, body.message, body.selected_option];
 
-    await db.execute(SQLQuery);
+    await db.execute(SQLQuery, values);
 
     const fetchQuery = "SELECT * FROM guest ORDER BY createdAt DESC";
     const [rows] = await db.execute(fetchQuery);
